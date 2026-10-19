@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - TaskFlow{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+
+            <div class="card shadow-sm border-0 mt-4">
+                <div class="card-body p-4">
+
+                    <!-- Header -->
+                    <div class="text-center mb-4">
+                        <i class="bi bi-person-plus text-primary" style="font-size: 3rem;"></i>
+                        <h2 class="h4 mt-2 fw-bold">Create your account</h2>
+                        <p class="text-muted">Start organizing your tasks today</p>
+                    </div>
+
+                    <form method="post" action="{% url 'tasks:register' %}" novalidate>
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+
+                        <!-- Username -->
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label fw-semibold">Username</label>
+                            <input type="text" name="username" id="id_username"
+                                   class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+                                   value="{{ form.username.value|default:'' }}"
+                                   placeholder="Choose a username" autofocus required>
+                            {% if form.username.errors %}
+                            <div class="invalid-feedback">{{ form.username.errors.0 }}</div>
+                            {% endif %}
+                            <div class="form-text">{{ form.username.help_text }}</div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="id_email" class="form-label fw-semibold">Email address</label>
+                            <input type="email" name="email" id="id_email"
+                                   class="form-control {% if form.email.errors %}is-invalid{% endif %}"
+                                   value="{{ form.email.value|default:'' }}"
+                                   placeholder="your@email.com" required>
+                            {% if form.email.errors %}
+                            <div class="invalid-feedback">{{ form.email.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label for="id_password1" class="form-label fw-semibold">Password</label>
+                            <input type="password" name="password1" id="id_password1"
+                                   class="form-control {% if form.password1.errors %}is-invalid{% endif %}"
+                                   placeholder="Create a strong password" required>
+                            {% if form.password1.errors %}
+                            <div class="invalid-feedback">{{ form.password1.errors.0 }}</div>
+                            {% endif %}
+                            <div class="form-text">{{ form.password1.help_text }}</div>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="mb-4">
+                            <label for="id_password2" class="form-label fw-semibold">Confirm Password</label>
+                            <input type="password" name="password2" id="id_password2"
+                                   class="form-control {% if form.password2.errors %}is-invalid{% endif %}"
+                                   placeholder="Repeat your password" required>
+                            {% if form.password2.errors %}
+                            <div class="invalid-feedback">{{ form.password2.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-person-check me-2"></i>Create Account
+                            </button>
+                        </div>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <p class="text-center text-muted mb-0">
+                        Already have an account?
+                        <a href="{% url 'login' %}" class="fw-semibold">Sign in here</a>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

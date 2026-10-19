@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - TaskFlow{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-5 col-lg-4">
+
+            <!-- Login card -->
+            <div class="card shadow-sm border-0 mt-4">
+                <div class="card-body p-4">
+
+                    <!-- Header -->
+                    <div class="text-center mb-4">
+                        <i class="bi bi-check2-square text-primary" style="font-size: 3rem;"></i>
+                        <h2 class="h4 mt-2 fw-bold">Welcome back</h2>
+                        <p class="text-muted">Sign in to manage your tasks</p>
+                    </div>
+
+                    <!-- Login form -->
+                    <form method="post" action="{% url 'login' %}" novalidate>
+                        {% csrf_token %}
+
+                        <!-- Non-field errors (e.g., wrong password) -->
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+
+                        <!-- Username -->
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label fw-semibold">Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                <input type="text" name="username" id="id_username"
+                                       class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+                                       placeholder="Enter your username"
+                                       autofocus required>
+                                {% if form.username.errors %}
+                                <div class="invalid-feedback">{{ form.username.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label for="id_password" class="form-label fw-semibold">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input type="password" name="password" id="id_password"
+                                       class="form-control {% if form.password.errors %}is-invalid{% endif %}"
+                                       placeholder="Enter your password"
+                                       required>
+                                <button class="btn btn-outline-secondary" type="button"
+                                        id="togglePassword" title="Show/hide password">
+                                    <i class="bi bi-eye" id="eyeIcon"></i>
+                                </button>
+                                {% if form.password.errors %}
+                                <div class="invalid-feedback">{{ form.password.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Remember next parameter for redirect after login -->
+                        {% if next %}
+                        <input type="hidden" name="next" value="{{ next }}">
+                        {% endif %}
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                            </button>
+                        </div>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <p class="text-center text-muted mb-0">
+                        Don't have an account?
+                        <a href="{% url 'tasks:register' %}" class="fw-semibold">Register here</a>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Toggle password visibility
+document.getElementById('togglePassword').addEventListener('click', function() {
+    const pwd = document.getElementById('id_password');
+    const icon = document.getElementById('eyeIcon');
+    if (pwd.type === 'password') {
+        pwd.type = 'text';
+        icon.className = 'bi bi-eye-slash';
+    } else {
+        pwd.type = 'password';
+        icon.className = 'bi bi-eye';
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,360 @@
+/*
+ * TaskFlow Custom Styles
+ * Extends Bootstrap 5 with app-specific design tokens and components.
+ * All colors, spacing, and font sizes use CSS custom properties (variables)
+ * so you can easily retheme the whole app by changing the :root block.
+ */
+
+/* ============================================================
+   CSS CUSTOM PROPERTIES (Design Tokens)
+   These are like variables — define once, use everywhere.
+============================================================ */
+:root {
+    --tf-primary:       #4f46e5;   /* Indigo — main brand color */
+    --tf-primary-dark:  #3730a3;
+    --tf-success:       #16a34a;
+    --tf-warning:       #d97706;
+    --tf-danger:        #dc2626;
+    --tf-info:          #0891b2;
+    --tf-secondary:     #6b7280;
+
+    /* Badge colors for statuses */
+    --tf-todo-bg:       #e5e7eb;
+    --tf-todo-text:     #374151;
+    --tf-progress-bg:   #dbeafe;
+    --tf-progress-text: #1d4ed8;
+    --tf-done-bg:       #d1fae5;
+    --tf-done-text:     #065f46;
+
+    /* Badge colors for priorities */
+    --tf-low-bg:        #ecfdf5;
+    --tf-low-text:      #065f46;
+    --tf-medium-bg:     #fef9c3;
+    --tf-medium-text:   #713f12;
+    --tf-high-bg:       #fee2e2;
+    --tf-high-text:     #991b1b;
+
+    --tf-card-shadow:   0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
+    --tf-border-radius: 0.5rem;
+}
+
+/* ============================================================
+   BASE LAYOUT
+   min-height makes sure the footer stays at the bottom even
+   on pages with little content.
+============================================================ */
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f8fafc;  /* Very light gray background */
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: #1e293b;
+}
+
+main {
+    flex: 1 0 auto;  /* Takes up all available space between nav and footer */
+}
+
+.footer {
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   NAVBAR OVERRIDES
+   We use Bootstrap's bg-primary but customize the brand style.
+============================================================ */
+.navbar {
+    background-color: var(--tf-primary) !important;
+}
+
+.navbar-brand {
+    font-size: 1.4rem;
+    letter-spacing: -0.02em;
+}
+
+/* ============================================================
+   STAT CARDS (Dashboard)
+   The 6 summary cards at the top of the dashboard.
+============================================================ */
+.stat-card {
+    border-radius: var(--tf-border-radius);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: default;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,.12);
+}
+
+.stat-icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--tf-secondary);
+    margin-top: 0.25rem;
+}
+
+/* ============================================================
+   STATUS BADGES
+   Custom colored badges used for task status labels.
+   Replaces Bootstrap's generic badge colors.
+============================================================ */
+.status-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.35em 0.65em;
+    border-radius: 9999px;  /* Pill shape */
+}
+
+/* Maps to Task.get_status_badge_class() return values */
+.badge-todo {
+    background-color: var(--tf-todo-bg) !important;
+    color: var(--tf-todo-text) !important;
+}
+
+.badge-in-progress {
+    background-color: var(--tf-progress-bg) !important;
+    color: var(--tf-progress-text) !important;
+}
+
+.badge-completed {
+    background-color: var(--tf-done-bg) !important;
+    color: var(--tf-done-text) !important;
+}
+
+/* ============================================================
+   PRIORITY BADGES
+============================================================ */
+.priority-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.3em 0.6em;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* Maps to Task.get_priority_badge_class() return values */
+.badge-low {
+    background-color: var(--tf-low-bg) !important;
+    color: var(--tf-low-text) !important;
+}
+
+.badge-medium {
+    background-color: var(--tf-medium-bg) !important;
+    color: var(--tf-medium-text) !important;
+}
+
+.badge-high {
+    background-color: var(--tf-high-bg) !important;
+    color: var(--tf-high-text) !important;
+}
+
+/* ============================================================
+   TASK DETAIL PAGE
+============================================================ */
+.detail-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.detail-meta-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--tf-secondary);
+    font-weight: 600;
+}
+
+.detail-meta-value {
+    font-size: 0.95rem;
+    color: #1e293b;
+}
+
+.task-description {
+    white-space: pre-wrap;        /* Preserves line breaks from textarea */
+    word-break: break-word;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    border-left: 3px solid var(--tf-primary);
+}
+
+/* ============================================================
+   FORMS
+============================================================ */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--tf-primary);
+    box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.25);
+}
+
+/* Required field asterisk color */
+.text-danger {
+    color: var(--tf-danger) !important;
+}
+
+/* ============================================================
+   CARDS GLOBAL
+============================================================ */
+.card {
+    border-radius: var(--tf-border-radius);
+    box-shadow: var(--tf-card-shadow);
+}
+
+/* ============================================================
+   TABLE
+============================================================ */
+.table th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--tf-secondary);
+    font-weight: 600;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+/* Highlight overdue rows with a very light red background */
+.table-danger {
+    --bs-table-bg: #fff5f5;
+    --bs-table-hover-bg: #fee2e2;
+}
+
+/* ============================================================
+   NAVIGATION ACTIVE LINK
+============================================================ */
+.navbar-nav .nav-link.active {
+    font-weight: 600;
+    color: #ffffff !important;
+    border-bottom: 2px solid rgba(255,255,255,0.7);
+}
+
+/* ============================================================
+   FLASH MESSAGES
+============================================================ */
+.alert {
+    border-radius: var(--tf-border-radius);
+    border-left: 4px solid transparent;
+}
+
+.alert-success {
+    border-left-color: var(--tf-success);
+}
+
+.alert-danger {
+    border-left-color: var(--tf-danger);
+}
+
+.alert-warning {
+    border-left-color: var(--tf-warning);
+}
+
+.alert-info {
+    border-left-color: var(--tf-info);
+}
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.empty-state-icon {
+    font-size: 4rem;
+    color: #cbd5e1;
+    margin-bottom: 1rem;
+}
+
+/* ============================================================
+   PROGRESS BAR
+============================================================ */
+.progress {
+    border-radius: 9999px;
+    background-color: #e2e8f0;
+}
+
+.progress-bar {
+    border-radius: 9999px;
+    transition: width 0.6s ease;
+}
+
+/* ============================================================
+   BUTTONS
+============================================================ */
+.btn-primary {
+    background-color: var(--tf-primary);
+    border-color: var(--tf-primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--tf-primary-dark);
+    border-color: var(--tf-primary-dark);
+}
+
+/* ============================================================
+   BREADCRUMB
+============================================================ */
+.breadcrumb {
+    background: transparent;
+    padding: 0;
+    font-size: 0.875rem;
+}
+
+/* ============================================================
+   RESPONSIVE TWEAKS
+============================================================ */
+@media (max-width: 576px) {
+    .stat-number {
+        font-size: 1.5rem;
+    }
+    .stat-icon {
+        font-size: 1.4rem;
+    }
+    .card-body {
+        padding: 1rem;
+    }
+    h1.h3 {
+        font-size: 1.25rem;
+    }
+}
+
+/* ============================================================
+   UTILITIES
+============================================================ */
+.letter-spacing-1 {
+    letter-spacing: 0.05em;
+}
+
+/* Smooth page load — fade in all main content */
+main {
+    animation: fadeIn 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
